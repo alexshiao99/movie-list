@@ -14,39 +14,48 @@ class App extends React.Component {
       newMovie: '',
       query: '',
       movies: [],
-      oldMovies: [],
-      watchedMovies: {},
-      toWatch: {}
     };
+
+    this.watchedMovies = {};
+    this.toWatch = {};
+    this.allMovies = [];
   }
 
   watched(event) {
     let movieName = event.target.parentElement.className;
-    if(!this.state.watchedMovies[movieName]) {
-      this.state.watchedMovies[movieName] = {title: movieName};
-      delete this.state.toWatch[movieName]
+    if(!this.watchedMovies[movieName]) {
+      this.watchedMovies[movieName] = {title: movieName};
+      delete this.toWatch[movieName]
     } else {
-      delete this.state.watchedMovies[movieName];
-      this.state.toWatch[movieName] = {title:movieName};
+      delete this.watchedMovies[movieName];
+      this.toWatch[movieName] = {title:movieName};
     }
   }
 
   addMovies() {
-    this.state.toWatch[this.state.newMovie] = {title: this.state.newMovie};
     if(this.state.newMovie === '') {
       alert('Need Movie Name!');
     } else {
+      this.toWatch[this.state.newMovie] = {title: this.state.newMovie};
       this.setState({
         movies: this.state.movies.concat({title: this.state.newMovie}),
         newMovie: '',
-        toWatch: this.state.toWatch
       })
     }
   }
+  getAllMovies() {
+    this.allMovies = [];
+    for (let key in this.toWatch) {
+      this.allMovies.push({title: this.toWatch[key]['title']})
+    }
+    for (let key in this.watchedMovies) {
+      this.allMovies.push({title: this.watchedMovies[key]['title']})
+    }
 
+  }
   handleSearch() {
+    this.goBack();
     this.setState({
-      oldMovies: this.state.movies,
       movies: searchList(this.state.movies, this.state.query),
       query: ''
     });
@@ -67,34 +76,29 @@ class App extends React.Component {
   }
 
   goBack() {
-    this.state.movies = [];
-    for (let key in this.state.toWatch) {
-      this.state.movies.push({title: this.state.toWatch[key]['title']})
-    }
-    for (let key in this.state.watchedMovies) {
-      this.state.movies.push({title: this.state.watchedMovies[key]['title']})
-    }
-    this.setTheMovieState();
+    this.getAllMovies();
+    this.setTheMovieState(this.allMovies);
   }
 
   seeToWatch() {
-    this.state.movies = [];
-    for (var key in this.state.toWatch) {
-      this.state.movies.push({title: this.state.toWatch[key]['title']})
+    let arr = [];
+    for (var key in this.toWatch) {
+      arr.push({title: this.toWatch[key]['title']})
     }
-    this.setTheMovieState();
+    this.setTheMovieState(arr);
   }
 
   seeWatched() {
-    this.state.movies = [];
-    for (let key in this.state.watchedMovies) {
-      this.state.movies.push({title: this.state.watchedMovies[key]['title']})
+    let arr = [];
+    for (let key in this.watchedMovies) {
+      arr.push({title: this.watchedMovies[key]['title']})
     }
-    this.setTheMovieState();
+    this.setTheMovieState(arr);
   }
-  setTheMovieState() {
+
+  setTheMovieState(array) {
     this.setState({
-      movie: this.state.movie
+      movies: array
     })
   }
   render() {

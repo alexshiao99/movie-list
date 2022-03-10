@@ -1,3 +1,7 @@
 body {
   font-family: sans-serif, arial;
 }
+.watched {
+  background-color: rgb(210, 240, 222);
+  opacity: 50%;
+}
