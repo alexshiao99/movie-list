@@ -1,22 +1,24 @@
 import React from 'react';
 import MovieListEntry from './MovieListEntry.jsx';
+import updateDBWatched from '../RequestDB/updateDBWatched.js';
 
 class MovieList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clickedMovie: null
+      clickedMovieID: null
     }
   }
 
-  handleMovieClick(movieTitle) {
+  handleMovieClick(movieID) {
     this.setState({
-      clickedMovie: movieTitle
+      clickedMovieID: movieID
     })
   }
 
   handleWatchButton() {
     this.watched = !this.watched;
+    updateDBWatched(this);
   }
 
   render() {
@@ -28,7 +30,7 @@ class MovieList extends React.Component {
           {this.props.movies.map((movie, index) => {
             if (this.props.show === 'all' || this.props.show === movie.watched.toString()) {
               return <MovieListEntry
-              movie={movie} key={index} clickedMovie={this.state.clickedMovie}
+              movie={movie} key={index} clickedMovieID={this.state.clickedMovieID}
               handleWatchButton={this.handleWatchButton.bind(movie)} clickMovie={this.handleMovieClick.bind(this)}
               />
             }

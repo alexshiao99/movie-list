@@ -1,14 +1,13 @@
 import React from 'react';
 
 var MovieListEntry = function (props) {
-  if (props.clickedMovie === props.movie.title) {
+  if (props.clickedMovieID === props.movie.id) {
     return (
       <div>
-        <li onClick={() => {props.clickMovie(props.movie.title)}}>{props.movie.title}
+        <li onClick={() => {props.clickMovie(props.movie.id)}}>{props.movie.title}
           <ul>
+            <li>Movie ID: {props.movie.id}</li>
             <li>Year: {props.movie.Year}</li>
-            <li>Runtime: {props.movie.Runtime}</li>
-            <li>Metascore: {props.movie.Metascore}</li>
             <li>imdbRating: {props.movie.imdbRating}</li>
             <button className = 'watch-button' onClick={() => {props.handleWatchButton(); }}>Watched</button>
           </ul>
@@ -18,8 +17,7 @@ var MovieListEntry = function (props) {
   } else {
     return (
       <div>
-        <li onClick={() => {props.clickMovie(props.movie.title)}}>{props.movie.title}</li>
-
+        <li onClick={() => {props.clickMovie(props.movie.id)}}>{props.movie.title}</li>
       </div>
     )
   }
